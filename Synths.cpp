@@ -81,3 +81,16 @@ void WavetableSynth::generateRandomWavetable() {
 void WavetableSynth::setFrequency(double freq) {
     this->freq = freq;
 }
+
+
+FMSynth::FMSynth(double freq, double sampleRate) : Synth(freq, sampleRate) {
+    this->freq = freq;
+    this->sampleRate = sampleRate;
+    this->base = SineSynth(freq, sampleRate);
+    this->modulator = SineSynth(1, sampleRate);
+}
+double FMSynth::getSample() {
+    double out = this->base.getSample();
+    this->base.setFrequency(this->modulator.getSample() * this->freq);
+    return out;
+}

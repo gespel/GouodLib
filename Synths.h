@@ -63,4 +63,21 @@ private:
     double phaseIncrement = freq / sampleRate * tableSize;
 };
 
+class FMSynth: public Synth {
+public:
+    FMSynth(double freq, double sampleRate);
+    double getSample();
+    void setFrequency(double freq);
+
+
+private:
+    double sample = 0;
+    double freq = 0;
+    double sampleRate = 0;
+    SineSynth base;
+    SineSynth modulator;
+
+};
+
+
 #endif //GOUODRACK_SYNTHS_H
