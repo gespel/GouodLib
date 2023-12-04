@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <random>
-
+#include <memory>
 
 class Synth {
 public:
@@ -74,8 +74,8 @@ private:
     double sample = 0;
     double freq = 0;
     double sampleRate = 0;
-    SineSynth base;
-    SineSynth modulator;
+    std::unique_ptr<SineSynth> base;
+    std::unique_ptr<SineSynth> modulator;
 
 };
 

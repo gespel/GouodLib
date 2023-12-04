@@ -86,11 +86,11 @@ void WavetableSynth::setFrequency(double freq) {
 FMSynth::FMSynth(double freq, double sampleRate) : Synth(freq, sampleRate) {
     this->freq = freq;
     this->sampleRate = sampleRate;
-    this->base = SineSynth(freq, sampleRate);
-    this->modulator = SineSynth(1, sampleRate);
+    this->base = std::make_unique<SineSynth>(freq, sampleRate);
+    this->modulator = std::make_unique<SineSynth>(1, sampleRate);
 }
 double FMSynth::getSample() {
-    double out = this->base.getSample();
-    this->base.setFrequency(this->modulator.getSample() * this->freq);
+    double out = this->base->getSample();
+    this->base->setFrequency(this->modulator->getSample() * this->freq);
     return out;
 }
