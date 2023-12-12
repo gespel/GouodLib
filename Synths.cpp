@@ -94,3 +94,6 @@ double FMSynth::getSample() {
     this->base->setFrequency(this->modulator->getSample() * this->freq);
     return out;
 }
+void FMSynth::setFrequency(double freq) {
+    this->freq = freq;
+}
