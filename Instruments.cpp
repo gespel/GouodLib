@@ -35,3 +35,38 @@ void StrangeOrgan::setFrequency(double freq) {
     this->fs1R->setModulatorFrequency(freq*1.001);
     this->fs2R->setModulatorFrequency(freq/2*1.001);
 }
+
+void StrangeOrgan::setModulatorFrequency(double freq) {
+    this->fs1L->setFrequency(freq);
+    this->fs2L->setFrequency(freq);
+    this->fs1R->setFrequency(freq);
+    this->fs2R->setFrequency(freq);
+}
+
+GKick::GKick(double sampleRate) {
+    this->sampleRate = sampleRate;
+    base = new SineSynth(440.f, sampleRate);
+}
+
+double GKick::getSample() {
+    if(active) {
+        mastertimer++;
+        auto out = base->getSample() * (1 - ((double)mastertimer/(double)length));
+        if(mastertimer%10 == 0) {
+            base->setFrequency(220.f * (1 - ((double)mastertimer/(double)length)));
+        }
+        //Kicksynthesis
+        
+        if(mastertimer >= length) {
+            active = false;
+            mastertimer = 0;
+        }
+        return out;
+    }
+    else {
+        return 0;
+    }
+}
+void GKick::trigger() {
+    active = true;
+}

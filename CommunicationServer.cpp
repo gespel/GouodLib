@@ -9,7 +9,7 @@
 */
 
 #include "CommunicationServer.h"
-
+/*
 CommunicationServer::CommunicationServer() {
 	this->servername = "GouodLab";
 	this->port = 8000;
@@ -45,4 +45,4 @@ void CommunicationServer::startServer() {
     	buffer[n] = '\0'; 
     	printf("Client : %s\n", buffer); 
 	}
-}
+}*/

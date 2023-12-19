@@ -2,7 +2,7 @@
 #include "CommunicationServer.h"
 
 int main() {
-    CommunicationServer *cs = new CommunicationServer();
-    cs->startServer();
+    //CommunicationServer *cs = new CommunicationServer();
+    //cs->startServer();
     return 0;
 }
