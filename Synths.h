@@ -29,6 +29,7 @@ public:
     SineSynth(double freq, double sampleRate);
     double getSample();
     void setFrequency(double freq);
+    void resetPhase();
 };
 
 class SquareSynth : public Synth {
@@ -43,6 +44,7 @@ public:
     SawtoothSynth(double freq, double sampleRate);
     double getSample();
     void setFrequency(double freq);
+    void resetPhase();
 private:
     double sample = 0;
 };

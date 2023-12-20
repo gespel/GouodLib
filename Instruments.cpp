@@ -46,20 +46,28 @@ void StrangeOrgan::setModulatorFrequency(double freq) {
 GKick::GKick(double sampleRate) {
     this->sampleRate = sampleRate;
     base = new SineSynth(440.f, sampleRate);
+    transient = new SawtoothSynth(440.f, sampleRate);
 }
 
 double GKick::getSample() {
     if(active) {
         mastertimer++;
+        auto transientAttackEnvelope = this->getAddKickAttackEnvelope();
         auto out = base->getSample() * (1 - ((double)mastertimer/(double)length));
-        if(mastertimer%10 == 0) {
-            base->setFrequency(220.f * (1 - ((double)mastertimer/(double)length)));
-        }
+        out += transient->getSample() * transientAttackEnvelope;
+        
+        
+        base->setFrequency(220.f * (1 - ((double)mastertimer/(double)length)));
+        transient->setFrequency(220.f * transientAttackEnvelope);
+        
         //Kicksynthesis
         
         if(mastertimer >= length) {
             active = false;
             mastertimer = 0;
+            addKickEnvelopeTimer = 0;
+            base->resetPhase();
+            transient->resetPhase();
         }
         return out;
     }
@@ -69,4 +77,14 @@ double GKick::getSample() {
 }
 void GKick::trigger() {
     active = true;
+}
+
+double GKick::getAddKickAttackEnvelope() {
+    addKickEnvelopeTimer++;
+    if(addKickEnvelopeTimer <= 200) {
+        return 1 - (addKickEnvelopeTimer/200);
+    }
+    else {
+        return 0;
+    }
 }

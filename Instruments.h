@@ -22,11 +22,14 @@ public:
     GKick(double sampleRate);
     double getSample();
     void trigger();
+    double getAddKickAttackEnvelope();
     
 private:
     int mastertimer;
     double sampleRate;
-    int length = 5000;
+    int length = 13000;
     bool active = false;
     SineSynth *base;
+    SawtoothSynth *transient;
+    int addKickEnvelopeTimer;
 };

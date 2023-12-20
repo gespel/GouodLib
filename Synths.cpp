@@ -20,6 +20,9 @@ double SineSynth::getSample() {
 void SineSynth::setFrequency(double freq) {
     this->freq = freq;
 }
+void SineSynth::resetPhase() {
+    this->phase = 0;
+}
 
 
 SquareSynth::SquareSynth(double freq, double sampleRate) : Synth(freq, sampleRate) {
@@ -53,6 +56,9 @@ double SawtoothSynth::getSample() {
 }
 void SawtoothSynth::setFrequency(double freq) {
     this->freq = freq;
+}
+void SawtoothSynth::resetPhase() {
+    this->sample = -1;
 }
 
 WavetableSynth::WavetableSynth(double freq, double sampleRate, int wtSize) : Synth(freq, sampleRate) {
