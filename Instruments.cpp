@@ -88,3 +88,28 @@ double GKick::getAddKickAttackEnvelope() {
         return 0;
     }
 }
+
+PadDrone::PadDrone(double freq, double sampleRate) {
+    this->sampleRate = sampleRate;
+    this->freq = freq;
+    this->pd1 = new SawtoothSynth(this->freq, this->sampleRate);
+    this->pd2 = new SawtoothSynth(this->freq+1, this->sampleRate);
+    this->pd3 = new SawtoothSynth(this->freq/2, sampleRate);
+    this->pd4 = new SawtoothSynth((this->freq/2) + 1, sampleRate);
+    this->pd5 = new SawtoothSynth((this->freq*2), sampleRate);
+}
+
+std::tuple<double, double> PadDrone::getSample() {
+    double out = 0;
+    out += this->pd1->getSample();
+    out += this->pd2->getSample();
+    out += this->pd3->getSample();
+    out += this->pd4->getSample();
+    out += this->pd5->getSample();
+    out /= 5;
+    return std::make_tuple(out, out);
+}
+
+void PadDrone::setFrequency(double freq) {
+    this->freq = freq;
+}

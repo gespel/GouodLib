@@ -33,3 +33,19 @@ private:
     SawtoothSynth *transient;
     int addKickEnvelopeTimer;
 };
+
+class PadDrone {
+public:
+    PadDrone(double freq, double sampleRate);
+    std::tuple<double, double> getSample();
+    void setFrequency(double freq);
+private:
+    double sampleRate;
+    double freq;
+    SawtoothSynth *pd1;
+    SawtoothSynth *pd2;
+    SawtoothSynth *pd3;
+    SawtoothSynth *pd4;
+
+    SawtoothSynth *pd5;
+};
