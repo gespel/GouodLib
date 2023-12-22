@@ -43,10 +43,11 @@ void StrangeOrgan::setModulatorFrequency(double freq) {
     this->fs2R->setFrequency(freq);
 }
 
-GKick::GKick(double sampleRate) {
+GKick::GKick(double freq, double sampleRate) {
+    this->freq = freq;
     this->sampleRate = sampleRate;
-    base = new SineSynth(440.f, sampleRate);
-    transient = new SawtoothSynth(440.f, sampleRate);
+    base = new SineSynth(freq, sampleRate);
+    transient = new SawtoothSynth(freq * 4, sampleRate);
 }
 
 double GKick::getSample() {
@@ -57,8 +58,8 @@ double GKick::getSample() {
         out += transient->getSample() * transientAttackEnvelope;
         
         
-        base->setFrequency(220.f * (1 - ((double)mastertimer/(double)length)));
-        transient->setFrequency(220.f * transientAttackEnvelope);
+        base->setFrequency(freq * (1 - ((double)mastertimer/(double)length)));
+        transient->setFrequency(freq * 4 * transientAttackEnvelope);
         
         //Kicksynthesis
         

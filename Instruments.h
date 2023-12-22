@@ -19,12 +19,13 @@ private:
 
 class GKick {
 public:
-    GKick(double sampleRate);
+    GKick(double freq, double sampleRate);
     double getSample();
     void trigger();
     double getAddKickAttackEnvelope();
     
 private:
+    double freq;
     int mastertimer;
     double sampleRate;
     int length = 13000;
