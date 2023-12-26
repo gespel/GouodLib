@@ -107,3 +107,14 @@ void FMSynth::setModulatorFrequency(double freq) {
     this->modulator->setFrequency(freq);
     this->modulatorFreq = freq;
 }
+
+WhiteNoiseSynth::WhiteNoiseSynth(double freq, double sampleRate) : Synth(freq, sampleRate) {
+    this->freq = freq;
+    this->sampleRate = sampleRate;
+}
+double WhiteNoiseSynth::getSample() {
+    return ((float(rand()) / float(RAND_MAX)) * (0.5 - (-0.5))) - 0.5;
+}
+void WhiteNoiseSynth::setFrequency(double freq) {
+    this->freq = freq;
+}

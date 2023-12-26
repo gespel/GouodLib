@@ -1,6 +1,7 @@
 #include "Synths.h"
 #include <memory>
 #include <tuple>
+#include <iostream>
 
 class StrangeOrgan {
 public:
@@ -33,6 +34,21 @@ private:
     SineSynth *base;
     SawtoothSynth *transient;
     int addKickEnvelopeTimer;
+};
+
+class GHat {
+public:
+    GHat(double freq, double sampleRate);
+    std::tuple<double, double> getSample();
+    void trigger();
+private:
+    double freq;
+    int mastertimer;
+    double sampleRate;
+    int length = 20000;
+    bool active = false;
+    WhiteNoiseSynth *main;
+    
 };
 
 class PadDrone {

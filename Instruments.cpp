@@ -49,13 +49,12 @@ GKick::GKick(double freq, double sampleRate) {
     base = new SineSynth(freq, sampleRate);
     transient = new SawtoothSynth(freq * 4, sampleRate);
 }
-
 double GKick::getSample() {
     if(active) {
         mastertimer++;
         auto transientAttackEnvelope = this->getAddKickAttackEnvelope();
         auto out = base->getSample() * (1 - ((double)mastertimer/(double)length));
-        out += transient->getSample() * transientAttackEnvelope;
+        out += transient->getSample() * transientAttackEnvelope * 0.5;
         
         
         base->setFrequency(freq * (1 - ((double)mastertimer/(double)length)));
@@ -90,6 +89,32 @@ double GKick::getAddKickAttackEnvelope() {
     }
 }
 
+GHat::GHat(double freq, double sampleRate) {
+    this->freq = freq;
+    this->sampleRate = sampleRate;
+    this->main = new WhiteNoiseSynth(freq, sampleRate);
+}
+std::tuple<double, double> GHat::getSample() {
+    if(active) {
+        mastertimer++;
+        double s = 0;
+        s += main->getSample();
+        s *= 1.f - ((double)mastertimer/(double)length);
+        
+        if(mastertimer >= length) {
+            active = false;
+            mastertimer = 0;
+        }
+        return std::make_tuple(s, s);
+    }
+    else {
+        return std::make_tuple(0, 0);
+    }
+}
+void GHat::trigger() {
+    active = true;
+}
+
 PadDrone::PadDrone(double freq, double sampleRate) {
     this->sampleRate = sampleRate;
     this->freq = freq;
@@ -113,4 +138,9 @@ std::tuple<double, double> PadDrone::getSample() {
 
 void PadDrone::setFrequency(double freq) {
     this->freq = freq;
+    this->pd1->setFrequency(freq);
+    this->pd2->setFrequency(freq+1);
+    this->pd3->setFrequency(freq/2);
+    this->pd4->setFrequency((freq/2) + 1);
+    this->pd5->setFrequency(freq*2);
 }
