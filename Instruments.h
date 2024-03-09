@@ -66,3 +66,9 @@ private:
 
     SawtoothSynth *pd5;
 };
+
+class MegaDrone {
+public:
+    MegaDrone(double freq, double sampleRate);
+private:
+};
