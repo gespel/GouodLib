@@ -2,6 +2,8 @@
 #include <memory>
 #include <tuple>
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 class StrangeOrgan {
 public:
@@ -69,6 +71,11 @@ private:
 
 class MegaDrone {
 public:
-    MegaDrone(double freq, double sampleRate);
+    MegaDrone(double freq, int numVoices, double sampleRate);
+    std::tuple<double, double> getSample();
+    void setFrequency(double freq);
 private:
+    double sampleRate;
+    double freq;
+    std::vector<SawtoothSynth> synths;
 };

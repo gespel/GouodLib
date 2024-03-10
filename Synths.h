@@ -45,6 +45,7 @@ public:
     double getSample();
     void setFrequency(double freq);
     void resetPhase();
+    double getFrequency();
 private:
     double sample = 0;
 };

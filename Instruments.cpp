@@ -144,3 +144,31 @@ void PadDrone::setFrequency(double freq) {
     this->pd4->setFrequency((freq/2) + 1);
     this->pd5->setFrequency(freq*2);
 }
+
+MegaDrone::MegaDrone(double freq, int numVoices, double sampleRate) {
+    this->sampleRate = sampleRate;
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+    for(int i = 0; i < numVoices; i++) {
+        int random_number = std::rand();
+        double scaled_random = static_cast<double>(random_number) / RAND_MAX * 2.0;
+        SawtoothSynth ss(freq - 1 + scaled_random, sampleRate);
+        synths.push_back(ss);
+    }
+}
+
+std::tuple<double, double> MegaDrone::getSample() {
+    double sample = 0;
+    for(int i = 0; i < synths.size(); i++) {
+        sample += synths[i].getSample();
+    }
+    sample /= synths.size();
+    return std::make_tuple(sample, sample);
+}
+
+void MegaDrone::setFrequency(double freq) {
+    for(int i = 0; i < this->synths.size(); i++) {
+        double newFreq = this->synths[i].getFrequency() - freq;
+        this->synths[i].setFrequency(this->synths[i].getFrequency() - newFreq);
+        this->freq = freq;
+    }
+}

@@ -60,6 +60,9 @@ void SawtoothSynth::setFrequency(double freq) {
 void SawtoothSynth::resetPhase() {
     this->sample = -1;
 }
+double SawtoothSynth::getFrequency() {
+    return this->freq;
+}
 
 WavetableSynth::WavetableSynth(double freq, double sampleRate, int wtSize) : Synth(freq, sampleRate) {
     this->freq = freq;
