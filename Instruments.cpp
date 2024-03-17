@@ -173,10 +173,3 @@ void MegaDrone::setFrequency(double freq) {
     }
 }
 
-LichtenKick::LichtenKick(double sampleRate) {
-
-}
-
-std::tuple<double, double> getSample() {
-
-}

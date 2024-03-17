@@ -4,7 +4,7 @@ MidiEventParser::MidiEventParser(double sampleRate) {
 
 }
 
-std::vector<double> MidiEventParser::handle(juce::MidiBuffer *midiMessages) {
+std::vector<double> MidiEventParser::parseMidiToNote(juce::MidiBuffer *midiMessages) {
     //std::cout << "Called MidiParser handler" << std::endl;
     std::vector<double> out;
     for (const auto metadata : (*midiMessages)) {

@@ -4,7 +4,7 @@
 class MidiEventParser {
 public:
     MidiEventParser(double sampleRate);
-    std::vector<double> handle(juce::MidiBuffer *midiMessages);
+    std::vector<double> parseMidiToNote(juce::MidiBuffer *midiMessages);
 private:
     
 };
