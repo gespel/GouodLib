@@ -79,3 +79,13 @@ private:
     double freq;
     std::vector<SawtoothSynth> synths;
 };
+
+
+class LichtenKick {
+public:
+    LichtenKick(double sampleRate);
+    std::tuple<double, double> getSample();
+
+private:
+
+};
