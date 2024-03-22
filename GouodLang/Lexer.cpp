@@ -28,16 +28,22 @@ void Lexer::printTokens(std::vector<std::pair<TokenType, std::string>> tokens) {
         else if (token.first == TokenType::RIGHTPARAN) {
             std::cout << "RightParanthesis" << std::endl;
         }
+        else if(token.first == TokenType::FUNCTION) {
+            std::cout << "Function" << std::endl;
+        }
+        else {
+            std::cout << "Unknown Token" << std::endl;
+        }
     }
 }
 
 std::vector<std::pair<TokenType, std::string>> Lexer::tokenize(std::string input) {
     std::vector<std::pair<TokenType, std::string>> out;
-    std::cout << "Tokenizing src: " << input << std::endl;
+    //std::cout << "Tokenizing src: " << input << std::endl;
     std::vector<std::string> inputLines = splitString(input, ';');
 
     for (std::string line : inputLines) {
-        std::cout << "Tokenizing line: " << line << std::endl;
+        //std::cout << "Tokenizing line: " << line << std::endl;
         std::vector<std::pair<TokenType, std::string>> lineTokens = this->tokenizeLine(line);
         printTokens(lineTokens);
     }
@@ -51,8 +57,7 @@ std::vector<std::pair<TokenType, std::string>> Lexer::tokenizeLine(std::string l
     for (std::string tokenString : tokenStrings) {
         for (int i = 0; i < tokenString.length(); i++) {
             if (isalpha(tokenString[i])) {
-                std::string tokenValue = "" + tokenString[i];
-                i++;
+                std::string tokenValue = "";
                 while (i < tokenString.length()) {
                     if (isalpha(tokenString[i]) || tokenString[i] == '_') {
                         tokenValue += tokenString[i];
@@ -64,13 +69,26 @@ std::vector<std::pair<TokenType, std::string>> Lexer::tokenizeLine(std::string l
                 }
                 out.push_back(std::pair(TokenType::IDENTIFIER, tokenValue));
             }
-            else if(tokenString[i] == '(') {
-
-            }
-            else if (tokenString[i] == ')') {
+            if (tokenString[i] == '(') {
                 out.push_back(std::pair(TokenType::LEFTPARAN, "NULL"));
+            }
+            if (tokenString[i] == ')') {
+                out.push_back(std::pair(TokenType::RIGHTPARAN, "NULL"));
             }
         }
     }
+
+    tokenizeKeywords(out);
     return out;
+}
+
+void Lexer::tokenizeKeywords(std::vector<std::pair<TokenType, std::string>> &tokens) {
+    for (int i = 0; i < tokens.size(); i++) {
+        if (tokens[i].first == TokenType::IDENTIFIER) {
+            if (tokens[i].second == "function") {
+                tokens[i].first = TokenType::FUNCTION;
+                tokens[i].second = "NULL";
+            }
+        }
+    }
 }
