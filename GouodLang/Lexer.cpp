@@ -31,6 +31,9 @@ void Lexer::printTokens(std::vector<std::pair<TokenType, std::string>> tokens) {
         else if(token.first == TokenType::FUNCTION) {
             std::cout << "Function" << std::endl;
         }
+        else if(token.first == TokenType::NUMBER) {
+            std::cout << "Number with Value: " << token.second << std::endl;
+        }
         else {
             std::cout << "Unknown Token" << std::endl;
         }
@@ -59,7 +62,7 @@ std::vector<std::pair<TokenType, std::string>> Lexer::tokenizeLine(std::string l
             if (isalpha(tokenString[i])) {
                 std::string tokenValue = "";
                 while (i < tokenString.length()) {
-                    if (isalpha(tokenString[i]) || tokenString[i] == '_') {
+                    if (isalpha(tokenString[i]) || tokenString[i] == '_' || isdigit(tokenString[i])) {
                         tokenValue += tokenString[i];
                         i++;
                     }
@@ -68,6 +71,19 @@ std::vector<std::pair<TokenType, std::string>> Lexer::tokenizeLine(std::string l
                     }
                 }
                 out.push_back(std::pair(TokenType::IDENTIFIER, tokenValue));
+            }
+            if (isdigit(tokenString[i])) {
+                std::string tokenValue = "";
+                while (i < tokenString.length()) {
+                    if (isdigit(tokenString[i])) {
+                        tokenValue += tokenString[i];
+                        i++;
+                    }
+                    else {
+                        break;
+                    }
+                }
+                out.push_back(std::pair(TokenType::NUMBER, tokenValue));
             }
             if (tokenString[i] == '(') {
                 out.push_back(std::pair(TokenType::LEFTPARAN, "NULL"));
