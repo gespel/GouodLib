@@ -19,7 +19,8 @@ enum class TokenType {
 	DIVIDE,
 	FUNCTION,
 	COMMA,
-	SEMICOLON
+	SEMICOLON,
+	RETURN
 };
 
 

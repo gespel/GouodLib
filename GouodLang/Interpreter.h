@@ -14,4 +14,6 @@ public:
 private:
     std::map<std::string, double> variables;
     std::map<std::string, std::vector<std::pair<TokenType, std::string>>> functions;
+    double evaluate(std::vector<std::pair<TokenType, std::string>> tokens);
+    double terminal(std::pair<TokenType, std::string> t);
 };

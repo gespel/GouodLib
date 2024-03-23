@@ -61,6 +61,9 @@ void Lexer::printTokens(std::vector<std::pair<TokenType, std::string>> tokens) {
         else if(token.first == TokenType::SEMICOLON) {
             std::cout << "Semicolon" << std::endl;
         }        
+        else if(token.first == TokenType::RETURN) {
+            std::cout << "Return" << std::endl;
+        }
         else {
             std::cout << "Unknown Token" << std::endl;
         }
@@ -143,7 +146,13 @@ void Lexer::tokenizeKeywords(std::vector<std::pair<TokenType, std::string>> &tok
         if (tokens[i].first == TokenType::IDENTIFIER) {
             if (tokens[i].second == "function") {
                 tokens[i].first = TokenType::FUNCTION;
-                tokens[i].second = "NULL";
+                tokens[i].second = "FUNCTION";
+            }
+        }
+        else if(tokens[i].first == TokenType::IDENTIFIER) {
+            if(tokens[i].second == "return") {
+                tokens[i].first = TokenType::RETURN;
+                tokens[i].second = "RETURN";
             }
         }
     }
