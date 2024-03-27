@@ -46,6 +46,7 @@ void Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> token
                     
                 }
                 variables[variableName] = evaluate(expression);
+                index = 0;
             }   
         }
     }
@@ -53,47 +54,54 @@ void Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> token
 
 double Interpreter::evaluate(std::vector<std::pair<TokenType, std::string>> tokens) {
     if(tokens.size() == 1) {
-        return terminal(tokens[0]);
+        return terminal(tokens, 0);
     }
     /*for (auto const& x : tokens) {
         std::cout << x.second << std::endl;
     }
     std::cout << "==================" << std::endl;*/
-    for(int i = 0; i < tokens.size(); i++) {
-        double left = 0;
-        if(tokens[i + 1].first == TokenType::LEFTPARAN) {
-            //FUNCTION CALL
-            std::string functionName = tokens[0].second;
+    double out = 0;
+    if(tokens[1].first == TokenType::LEFTPARAN) {
+        //FUNCTION CALL
+        std::string functionName = tokens[0].second;
+    }
+    else {
+        out = expression(tokens);
+    }
+    while(index < tokens.size()) {
+        
+        if(tokens[index].first == TokenType::PLUS) {
+            incIndex();
+            double right = expression(tokens);
+            out += right;
         }
-        else {
-            left = terminal(tokens[i]);
-            i++;
+        else if(tokens[index].first == TokenType::MINUS) {
+            incIndex();
+            double right = expression(tokens);
+            out -= right;
         }
-        if(tokens[i].first == TokenType::PLUS) {
-            i++;
-            double right = expression(std::vector<std::pair<TokenType, std::string>>(tokens.begin() + i + 2, tokens.end()));
-            return left + right;
-        }
-        else if(tokens[i + 1].first == TokenType::MINUS) {
-            double right = expression(std::vector<std::pair<TokenType, std::string>>(tokens.begin() + i + 2, tokens.end()));
-            return left - right;
-        }
-        else {
-            return left;
+        else if(tokens[index].first == TokenType::RIGHTPARAN) {
+            return out;
         }
     }
     
-    
-    return 0;
+    return out;
 }
 
-double Interpreter::terminal(std::pair<TokenType, std::string> t) {
-    std::cout << "Returned terminal " << t.second << std::endl;
-    if(t.first == TokenType::NUMBER) {
-        return std::stod(t.second);
+void Interpreter::incIndex() {
+    index++;
+}
+
+double Interpreter::terminal(std::vector<std::pair<TokenType, std::string>> tokens, int sindex) {
+    if(tokens[sindex].first == TokenType::NUMBER) {
+        return std::stod(tokens[sindex].second);
     }
-    if(t.first == TokenType::IDENTIFIER) {
-        return variables[t.second];
+    else if(tokens[sindex].first == TokenType::IDENTIFIER) {
+        return variables[tokens[sindex].second];
+    }
+    else if(tokens[sindex].first == TokenType::LEFTPARAN) {
+        incIndex();
+        return evaluate(tokens);
     }
     else {
         std::cout << "Error: Expected number or identifier" << std::endl;
@@ -102,23 +110,29 @@ double Interpreter::terminal(std::pair<TokenType, std::string> t) {
     }
 }
 
-double Interpreter::expression(std::vector<std::pair<TokenType, std::string>> tokens, int *i) {
+double Interpreter::expression(std::vector<std::pair<TokenType, std::string>> tokens) {
     if(tokens.size() == 1) {
-        return terminal(tokens[0]);
+        return terminal(tokens, 0);
     }
-    for(int j = *i; j < tokens.size(); j++) {
-        double left = terminal(tokens[j]);
-        j++;
-        if(tokens[1].first == TokenType::MULTIPLY) {
-            double right = expression(std::vector<std::pair<TokenType, std::string>>(tokens.begin() + 2, tokens.end()), i);
-            return left * right;
+    double out = terminal(tokens, index);
+    while(index < tokens.size()) {
+        incIndex();
+        if(tokens[index].first == TokenType::MULTIPLY) {
+            incIndex();            
+            double right = terminal(tokens, index);
+            out *= right;
         }
-        else if(tokens[1].first == TokenType::DIVIDE) {
-            double right = expression(std::vector<std::pair<TokenType, std::string>>(tokens.begin() + 2, tokens.end()), i);
-            return left / right;
+        else if(tokens[index].first == TokenType::DIVIDE) {
+            incIndex();
+            double right = terminal(tokens, index);
+            out /= right;
+        }
+
+        else {
+            return out;
         }
     }
-    
+    return out;
 }
 
 void Interpreter::printDebug() {
