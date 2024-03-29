@@ -6,8 +6,11 @@ Interpreter::Interpreter() {
 
 }
 
-void Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tokens) {
+double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tokens) {
     for (int i = 0; i < tokens.size(); i++) {
+        if(tokens[i].first == TokenType::RETURN) {
+            return terminal(tokens, i + 1);
+        }
         if (tokens[i].first == TokenType::FUNCTION) {
             if(tokens[i + 1].first != TokenType::IDENTIFIER) {
                 std::cout << "Error: Expected identifier after function keyword" << std::endl;
@@ -50,6 +53,7 @@ void Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> token
             }
         }
     }
+    return 0;
 }
 
 double Interpreter::evaluate(std::vector<std::pair<TokenType, std::string>> tokens) {
@@ -101,7 +105,12 @@ double Interpreter::terminal(std::vector<std::pair<TokenType, std::string>> toke
             //FUNCTION CALL
             std::string functionName = tokens[sindex].second;
             std::vector<std::pair<TokenType, std::string>> functionTokens = functions[functionName];
-            return evaluate(functionTokens);
+            Interpreter i;
+            std::cout << "Function Tokens: " << std::endl;
+            for(int i = 0; i < functionTokens.size() + 5; i++) {
+                incIndex();
+            }
+            return i.interpret(functionTokens);
         }
         else {  
             return variables[tokens[sindex].second];
