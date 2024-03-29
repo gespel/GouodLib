@@ -47,7 +47,7 @@ void Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> token
                 }
                 variables[variableName] = evaluate(expression);
                 index = 0;
-            }   
+            }
         }
     }
 }
@@ -97,7 +97,15 @@ double Interpreter::terminal(std::vector<std::pair<TokenType, std::string>> toke
         return std::stod(tokens[sindex].second);
     }
     else if(tokens[sindex].first == TokenType::IDENTIFIER) {
-        return variables[tokens[sindex].second];
+        if(tokens[sindex + 1].first == TokenType::LEFTPARAN) {
+            //FUNCTION CALL
+            std::string functionName = tokens[sindex].second;
+            std::vector<std::pair<TokenType, std::string>> functionTokens = functions[functionName];
+            return evaluate(functionTokens);
+        }
+        else {  
+            return variables[tokens[sindex].second];
+        }
     }
     else if(tokens[sindex].first == TokenType::LEFTPARAN) {
         incIndex();
