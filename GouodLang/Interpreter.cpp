@@ -2,7 +2,7 @@
 
 
 Interpreter::Interpreter() {
-    std::cout << std::endl << "Interpreter Initialized..." << std::endl << "==================" << std::endl;
+    //std::cout << std::endl << "Interpreter Initialized..." << std::endl << "==================" << std::endl;
 
 }
 
@@ -177,7 +177,7 @@ void Interpreter::printDebug() {
 double Interpreter::callFunction(std::string functionName) {
     std::vector<std::pair<TokenType, std::string>> functionTokens = functions[functionName];
     Interpreter i;
-    std::cout << "Calling function: " << functionName << std::endl;
+    //std::cout << "Calling function: " << functionName << std::endl;
     for(int i = 0; i < functionTokens.size(); i++) {
         //std::cout << functionTokens[i].second << std::endl;
         //incIndex();
