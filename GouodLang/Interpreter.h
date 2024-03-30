@@ -18,5 +18,7 @@ private:
     double evaluate(std::vector<std::pair<TokenType, std::string>> tokens);
     double terminal(std::vector<std::pair<TokenType, std::string>> tokens, int sindex);
     double expression(std::vector<std::pair<TokenType, std::string>> tokens);
+    double callFunction(std::string functionName);
+    void printTokens(std::vector<std::pair<TokenType, std::string>> tokens);
     int index = 0;
 };

@@ -14,7 +14,7 @@ std::vector<std::string> splitString(const std::string& s, char delimiter) {
 }
 
 Lexer::Lexer() {
-    std::cout << "==================" << std::endl << "Lexer Initialized" << std::endl << "==================" << std::endl;
+    std::cout << "==================" << std::endl << "Lexer Initialized...";
 }
 
 void Lexer::printTokens(std::vector<std::pair<TokenType, std::string>> tokens) {
