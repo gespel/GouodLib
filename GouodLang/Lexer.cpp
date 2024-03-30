@@ -148,9 +148,7 @@ void Lexer::tokenizeKeywords(std::vector<std::pair<TokenType, std::string>> &tok
                 tokens[i].first = TokenType::FUNCTION;
                 tokens[i].second = "FUNCTION";
             }
-        }
-        else if(tokens[i].first == TokenType::IDENTIFIER) {
-            if(tokens[i].second == "return") {
+            else if(tokens[i].second == "return") {
                 tokens[i].first = TokenType::RETURN;
                 tokens[i].second = "RETURN";
             }

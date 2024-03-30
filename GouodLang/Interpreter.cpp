@@ -8,11 +8,11 @@ Interpreter::Interpreter() {
 
 double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tokens) {
     for (int i = 0; i < tokens.size(); i++) {
-        //std::cout << "Interpretation starting" << std::endl;
+        //std::cout << "Current token: " << tokens[i].second << std::endl;
         if(tokens[i].first == TokenType::RETURN) {
             return terminal(tokens, i + 1);
         }
-        if (tokens[i].first == TokenType::FUNCTION) {
+        else if (tokens[i].first == TokenType::FUNCTION) {
             if(tokens[i + 1].first != TokenType::IDENTIFIER) {
                 std::cout << "Error: Expected identifier after function keyword" << std::endl;
                 exit(1);
@@ -39,14 +39,14 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
             }
             functions[functionName] = functionTokens;
         }
-        if(tokens[i].first == TokenType::IDENTIFIER) {
+        else if(tokens[i].first == TokenType::IDENTIFIER) {
             if(tokens[i+1].first != TokenType::ASSIGN) {
                 std::vector<std::pair<TokenType, std::string>> expression;
                 while(tokens[i].first != TokenType::SEMICOLON) {
                     expression.push_back(tokens[i]);  
                     i++;
                 }
-                printTokens(expression);
+                //printTokens(expression);
                 std::cout << evaluate(expression) << std::endl;
                 index = 0;
             }
@@ -118,6 +118,8 @@ double Interpreter::terminal(std::vector<std::pair<TokenType, std::string>> toke
     else if(tokens[sindex].first == TokenType::IDENTIFIER) {
         if(tokens[sindex + 1].first == TokenType::LEFTPARAN) {
             //FUNCTION CALL
+            incIndex();
+            incIndex();
             return callFunction(tokens[sindex].second);
         }
         else {  
@@ -178,8 +180,9 @@ double Interpreter::callFunction(std::string functionName) {
     std::cout << "Calling function: " << functionName << std::endl;
     for(int i = 0; i < functionTokens.size(); i++) {
         //std::cout << functionTokens[i].second << std::endl;
-        incIndex();
+        //incIndex();
     }
+    //printTokens(functionTokens);
     return i.interpret(functionTokens);
 }
 
