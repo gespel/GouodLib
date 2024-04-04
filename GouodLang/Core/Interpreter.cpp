@@ -60,6 +60,16 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
                 }
             }
         }
+        else if(tokens[i].first == TokenType::NUMBER) {
+            std::vector<std::pair<TokenType, std::string>> expression;
+            while(tokens[i].first != TokenType::SEMICOLON) {
+                expression.push_back(tokens[i]);  
+                i++;
+            }
+            //printTokens(expression);
+            std::cout << evaluate(expression) << std::endl;
+            index = 0;
+        }
     }
     //std::cerr << "ERROR HIT END OF INTERPRETATION" << std::endl;
     return 0;
