@@ -4,25 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
-
-enum class TokenType {
-	NUMBER,
-	IDENTIFIER,
-	LEFTPARAN,
-	RIGHTPARAN,
-	LEFTBRACK,
-	RIGHTBRACK,
-	ASSIGN,
-	PLUS,
-	MINUS,
-	MULTIPLY,
-	DIVIDE,
-	FUNCTION,
-	COMMA,
-	SEMICOLON,
-	RETURN
-};
-
+#include "TokenType.h"
 
 class Lexer {
 public:

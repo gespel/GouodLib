@@ -13,31 +13,27 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
             return terminal(tokens, i + 1);
         }
         else if (tokens[i].first == TokenType::FUNCTION) {
-            if(tokens[i + 1].first != TokenType::IDENTIFIER) {
-                std::cout << "Error: Expected identifier after function keyword" << std::endl;
-                exit(1);
-            }
-            std::string functionName = tokens[i + 1].second;
-            if(tokens[i + 2].first != TokenType::LEFTPARAN) {
-                std::cout << "Error: Expected left paran after function name" << std::endl;
-                exit(1);
-            }
+            i++;
+            std::string functionName = tokens[i].second;
+            i += 2;
+
             //ARGUMENTS
-            if(tokens[i + 3].first != TokenType::RIGHTPARAN) {
-                std::cout << "Error: Expected right paran after function arguments" << std::endl;
-                exit(1);
+            std::vector<std::string> args;
+            while(tokens[i].first != TokenType::RIGHTPARAN) {
+                args.push_back(tokens[i].second);
+                i += 2;
             }
-            if(tokens[i + 4].first != TokenType::LEFTBRACK) {
-                std::cout << "Error: Expected left bracket after function arguments" << std::endl;
-                exit(1);
-            }
+            i += 2;
+            
             std::vector<std::pair<TokenType, std::string>> functionTokens;
-            i += 5;
             while (tokens[i].first != TokenType::RIGHTBRACK) {
                 functionTokens.push_back(tokens[i]);
                 i++;
             }
-            functions[functionName] = functionTokens;
+            Function *f = new Function(functionName, functionTokens, args);
+
+            //functions[functionName] = functionTokens;
+            newFunctions[functionName] = f;
         }
         else if(tokens[i].first == TokenType::IDENTIFIER) {
             if(tokens[i+1].first != TokenType::ASSIGN) {
@@ -66,6 +62,7 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
             }
         }
     }
+    //std::cerr << "ERROR HIT END OF INTERPRETATION" << std::endl;
     return 0;
 }
 
@@ -111,32 +108,6 @@ void Interpreter::incIndex() {
     index++;
 }
 
-double Interpreter::terminal(std::vector<std::pair<TokenType, std::string>> tokens, int sindex) {
-    if(tokens[sindex].first == TokenType::NUMBER) {
-        return std::stod(tokens[sindex].second);
-    }
-    else if(tokens[sindex].first == TokenType::IDENTIFIER) {
-        if(tokens[sindex + 1].first == TokenType::LEFTPARAN) {
-            //FUNCTION CALL
-            incIndex();
-            incIndex();
-            return callFunction(tokens[sindex].second);
-        }
-        else {  
-            return variables[tokens[sindex].second];
-        }
-    }
-    else if(tokens[sindex].first == TokenType::LEFTPARAN) {
-        incIndex();
-        return evaluate(tokens);
-    }
-    else {
-        std::cout << "Error: Expected number or identifier and got " << tokens[sindex].second << std::endl;
-        exit(1);
-    
-    }
-}
-
 double Interpreter::expression(std::vector<std::pair<TokenType, std::string>> tokens) {
     if(tokens.size() == 1) {
         return terminal(tokens, 0);
@@ -159,14 +130,47 @@ double Interpreter::expression(std::vector<std::pair<TokenType, std::string>> to
             return out;
         }
     }
-    return out;
+    //std::cerr << "ERROR HIT EXPRESSION END" << std::endl;
+    //exit(-1);
+    return 0;
+}
+
+double Interpreter::terminal(std::vector<std::pair<TokenType, std::string>> tokens, int sindex) {
+    if(tokens[sindex].first == TokenType::NUMBER) {
+        return std::stod(tokens[sindex].second);
+    }
+    else if(tokens[sindex].first == TokenType::IDENTIFIER) {
+        if(tokens[sindex + 1].first == TokenType::LEFTPARAN) {
+            //FUNCTION CALL
+            incIndex();
+            incIndex();
+            std::vector<std::tuple<TokenType, std::string>> args;
+            while(tokens[index].first != TokenType::RIGHTPARAN) {
+                args.push_back(tokens[index]);
+                incIndex();
+            }
+            return callFunction(tokens[sindex].second, args);
+        }
+        else {  
+            return variables[tokens[sindex].second];
+        }
+    }
+    else if(tokens[sindex].first == TokenType::LEFTPARAN) {
+        incIndex();
+        return evaluate(tokens);
+    }
+    else {
+        std::cout << "Error: Expected number or identifier and got " << tokens[sindex].second << std::endl;
+        exit(1);
+    
+    }
 }
 
 void Interpreter::printDebug() {
-    for (auto const& x : functions) {
-        std::cout << "\tFunction: " << x.first << std::endl;
-        for (int i = 0; i < x.second.size(); i++) {
-            std::cout << "\t\t" << x.second[i].second << std::endl;
+    for (auto const x : newFunctions) {
+        std::cout << "\tFunction: " << x.second->getName() << std::endl;
+        for (int i = 0; i < x.second->getTokens().size(); i++) {
+            std::cout << "\t\t" << x.second->getTokens()[i].second << std::endl;
         }
     }
     for(auto const& x : variables) {
@@ -174,8 +178,10 @@ void Interpreter::printDebug() {
     }
 }
 
-double Interpreter::callFunction(std::string functionName) {
-    std::vector<std::pair<TokenType, std::string>> functionTokens = functions[functionName];
+double Interpreter::callFunction(std::string functionName, std::vector<std::tuple<TokenType, std::string>> args) {
+    Function* f = newFunctions[functionName];
+    //std::vector<std::pair<TokenType, std::string>> functionTokens = functions[functionName];
+    std::vector<std::pair<TokenType, std::string>> functionTokens = f->getTokens();
     Interpreter i;
     //std::cout << "Calling function: " << functionName << std::endl;
     for(int i = 0; i < functionTokens.size(); i++) {
