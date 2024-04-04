@@ -15,7 +15,6 @@ public:
     Function(std::string name, std::vector<std::pair<TokenType, std::string>> tokens, std::vector<std::string> args);
     std::string getName();
     std::vector<std::pair<TokenType, std::string>> getTokens();
-    double execute();
 private:
     std::string name;
     std::vector<std::pair<TokenType, std::string>> tokens;

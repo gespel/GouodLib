@@ -6,7 +6,6 @@
 #include <map>
 #include "Function.h"
 
-
 class Interpreter {
 public:
     Interpreter();

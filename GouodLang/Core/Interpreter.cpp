@@ -1,6 +1,5 @@
 #include "Interpreter.h"
 
-
 Interpreter::Interpreter() {
     //std::cout << std::endl << "Interpreter Initialized..." << std::endl << "==================" << std::endl;
 
