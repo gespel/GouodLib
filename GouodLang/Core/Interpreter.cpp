@@ -42,7 +42,7 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
                     i++;
                 }
                 //printTokens(expression);
-                std::cout << evaluate(expression) << std::endl;
+                std::cout << Tools::createStringFromTokens(expression) << "= " << evaluate(expression) << std::endl;
                 index = 0;
             }
             else {
@@ -67,7 +67,7 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
                 i++;
             }
             //printTokens(expression);
-            std::cout << evaluate(expression) << std::endl;
+            std::cout << Tools::createStringFromTokens(expression) << "= " << evaluate(expression) << std::endl;
             index = 0;
         }
     }

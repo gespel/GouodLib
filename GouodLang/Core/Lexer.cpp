@@ -102,34 +102,34 @@ std::vector<std::pair<TokenType, std::string>> Lexer::tokenize(std::string input
                 out.push_back(std::pair(TokenType::NUMBER, tokenValue));
             }
             if (tokenString[i] == '(') {
-                out.push_back(std::pair(TokenType::LEFTPARAN, "LEFTPARAN"));
+                out.push_back(std::pair(TokenType::LEFTPARAN, "("));
             }
             if (tokenString[i] == ')') {
-                out.push_back(std::pair(TokenType::RIGHTPARAN, "RIGHTPARAN"));
+                out.push_back(std::pair(TokenType::RIGHTPARAN, ")"));
             }
             if (tokenString[i] == ',') {
-                out.push_back(std::pair(TokenType::COMMA, "COMMA"));
+                out.push_back(std::pair(TokenType::COMMA, ","));
             }
             if (tokenString[i] == '=') {
-                out.push_back(std::pair(TokenType::ASSIGN, "ASSIGN"));
+                out.push_back(std::pair(TokenType::ASSIGN, "="));
             }
             if (tokenString[i] == '+') {
-                out.push_back(std::pair(TokenType::PLUS, "PLUS"));
+                out.push_back(std::pair(TokenType::PLUS, "+"));
             }
             if (tokenString[i] == '-') {
-                out.push_back(std::pair(TokenType::MINUS, "MINUS"));
+                out.push_back(std::pair(TokenType::MINUS, "-"));
             }
             if (tokenString[i] == '*') {
-                out.push_back(std::pair(TokenType::MULTIPLY, "MULTIPLY"));
+                out.push_back(std::pair(TokenType::MULTIPLY, "*"));
             }
             if (tokenString[i] == '/') {
-                out.push_back(std::pair(TokenType::DIVIDE, "DIVIDE"));
+                out.push_back(std::pair(TokenType::DIVIDE, "/"));
             }
             if (tokenString[i] == '{') {
-                out.push_back(std::pair(TokenType::LEFTBRACK, "LEFTBRACK"));
+                out.push_back(std::pair(TokenType::LEFTBRACK, "{"));
             }
             if (tokenString[i] == '}') {
-                out.push_back(std::pair(TokenType::RIGHTBRACK, "RIGHTBRACK"));
+                out.push_back(std::pair(TokenType::RIGHTBRACK, "}"));
             }
             if(tokenString[i] == ';') {
                 out.push_back(std::pair(TokenType::SEMICOLON, "SEMICOLON"));
