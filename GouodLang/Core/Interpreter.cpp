@@ -191,7 +191,7 @@ double Interpreter::callFunction(std::string functionName, std::vector<std::tupl
     Function* f = newFunctions[functionName];
     //std::vector<std::pair<TokenType, std::string>> functionTokens = functions[functionName];
     std::vector<std::pair<TokenType, std::string>> functionTokens = f->getTokens();
-    std::vector<std::pair<std::string, double>> vars;
+    std::map<std::string, double> vars;
     Interpreter i(vars);
     //std::cout << "Calling function: " << functionName << std::endl;
     for(int i = 0; i < functionTokens.size(); i++) {

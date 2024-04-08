@@ -1,12 +1,13 @@
 #include "GouodLang.h"
 
 GouodLang::GouodLang() {
-    std::vector<std::pair<std::string, double>> vars;
+    std::map<std::string, double> vars;
     interpreter = new Interpreter(vars);
+    lexer = new Lexer();
 }
 
 void GouodLang::interpretString(std::string input) {
-    std::cout << interpreter.interpret(lexer.tokenize(input));
+    std::cout << interpreter->interpret(lexer->tokenize(input));
 }
 
 void GouodLang::interpretFile(std::string filePath) {
@@ -15,5 +16,5 @@ void GouodLang::interpretFile(std::string filePath) {
 
     std::stringstream strStream;
     strStream << inFile.rdbuf(); 
-    std::cout << interpreter.interpret(lexer.tokenize(strStream.str())) << std::endl; 
+    std::cout << interpreter->interpret(lexer->tokenize(strStream.str())) << std::endl; 
 }
