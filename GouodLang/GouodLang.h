@@ -10,6 +10,6 @@ public:
     void interpretFile(std::string filePath);
     void interpretString(std::string input);
 private:
-    Interpreter interpreter;
-    Lexer lexer;
+    Interpreter *interpreter;
+    Lexer *lexer;
 };

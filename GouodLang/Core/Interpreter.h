@@ -9,7 +9,7 @@
 
 class Interpreter {
 public:
-    Interpreter();
+    Interpreter(std::map<std::string, double> initVariables);
     double interpret(std::vector<std::pair<TokenType, std::string>> tokens);
     void printDebug();
     void incIndex();

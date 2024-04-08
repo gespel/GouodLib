@@ -1,8 +1,8 @@
 #include "Interpreter.h"
 
-Interpreter::Interpreter() {
+Interpreter::Interpreter(std::map<std::string, double> initVariables) {
     //std::cout << std::endl << "Interpreter Initialized..." << std::endl << "==================" << std::endl;
-
+    variables.insert(initVariables.begin(), initVariables.end());
 }
 
 double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tokens) {
@@ -191,7 +191,8 @@ double Interpreter::callFunction(std::string functionName, std::vector<std::tupl
     Function* f = newFunctions[functionName];
     //std::vector<std::pair<TokenType, std::string>> functionTokens = functions[functionName];
     std::vector<std::pair<TokenType, std::string>> functionTokens = f->getTokens();
-    Interpreter i;
+    std::vector<std::pair<std::string, double>> vars;
+    Interpreter i(vars);
     //std::cout << "Calling function: " << functionName << std::endl;
     for(int i = 0; i < functionTokens.size(); i++) {
         //std::cout << functionTokens[i].second << std::endl;

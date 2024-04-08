@@ -1,7 +1,8 @@
 #include "GouodLang.h"
 
 GouodLang::GouodLang() {
-
+    std::vector<std::pair<std::string, double>> vars;
+    interpreter = new Interpreter(vars);
 }
 
 void GouodLang::interpretString(std::string input) {
