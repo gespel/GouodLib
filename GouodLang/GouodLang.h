@@ -1,5 +1,8 @@
 #include "Core/Interpreter.h"
 #include "Core/Lexer.h"
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 class GouodLang {
 public:
