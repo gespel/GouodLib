@@ -13,3 +13,7 @@ std::vector<std::pair<TokenType, std::string>> Function::getTokens() {
 std::string Function::getName() {
     return name;
 }
+
+std::vector<std::string> getArguments() {
+    return args;
+}

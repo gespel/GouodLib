@@ -33,6 +33,8 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
 
             //functions[functionName] = functionTokens;
             newFunctions[functionName] = f;
+	    std::cout << "function created with arguments: " << std::endl;
+	    
         }
         else if(tokens[i].first == TokenType::IDENTIFIER) {
             if(tokens[i+1].first != TokenType::ASSIGN) {
