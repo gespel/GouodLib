@@ -1,4 +1,4 @@
-function asd() { 
+function asd(a, b) { 
     x2 = 2; 
     return x2; 
 } 

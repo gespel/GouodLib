@@ -14,6 +14,6 @@ std::string Function::getName() {
     return name;
 }
 
-std::vector<std::string> getArguments() {
+std::vector<std::string> Function::getArguments() {
     return args;
 }

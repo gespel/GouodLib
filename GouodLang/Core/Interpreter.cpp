@@ -18,11 +18,30 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
 
             //ARGUMENTS
             std::vector<std::string> args;
+            
             while(tokens[i].first != TokenType::RIGHTPARAN) {
-                args.push_back(tokens[i].second);
-                i += 2;
+                if(tokens[i].first == TokenType::IDENTIFIER) {
+                    std::cout << tokens[i].second << std::endl;
+                    args.push_back(tokens[i].second);
+                    i++;
+                }
+                else {
+                    std::cout << "Identifier expected in function definition!" << std::endl;
+                    exit(-1);
+                }
+
+                if(tokens[i].first == TokenType::COMMA) {
+                    i++;
+                }
+                else if(tokens[i].first == TokenType::RIGHTPARAN) {
+                    i++;
+                    break;
+                }
+                else {
+                    std::cout << "Comma or right paranthesis expected!" << std::endl;
+                    exit(-1);
+                }
             }
-            i += 2;
             
             std::vector<std::pair<TokenType, std::string>> functionTokens;
             while (tokens[i].first != TokenType::RIGHTBRACK) {
@@ -33,7 +52,10 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
 
             //functions[functionName] = functionTokens;
             newFunctions[functionName] = f;
-	    std::cout << "function created with arguments: " << std::endl;
+	        std::cout << "Function created with arguments: " << std::endl;
+            for(auto arg : f->getArguments()) {
+                std::cout << arg << std::endl;
+            }
 	    
         }
         else if(tokens[i].first == TokenType::IDENTIFIER) {
