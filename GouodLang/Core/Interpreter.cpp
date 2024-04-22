@@ -1,8 +1,12 @@
 #include "Interpreter.h"
 
 Interpreter::Interpreter(std::map<std::string, double> initVariables) {
-    //std::cout << std::endl << "Interpreter Initialized..." << std::endl << "==================" << std::endl;
     variables.insert(initVariables.begin(), initVariables.end());
+    /*std::cout << std::endl << "==================" << std::endl << "Interpreter Initialized" << std::endl;
+    for(auto var : variables) {
+        std::cout << var.first << " = " << var.second << std::endl;
+    }
+    std::cout << "==================" << std::endl;*/
 }
 
 double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tokens) {
@@ -163,7 +167,7 @@ double Interpreter::expression(std::vector<std::pair<TokenType, std::string>> to
             return out;
         }
     }
-    //std::cerr << "ERROR HIT EXPRESSION END" << std::endl;
+    std::cerr << "ERROR HIT EXPRESSION END" << std::endl;
     //exit(-1);
     return 0;
 }
@@ -179,6 +183,7 @@ double Interpreter::terminal(std::vector<std::pair<TokenType, std::string>> toke
             incIndex();
             std::vector<double> args;
             while(tokens[index].first != TokenType::RIGHTPARAN) {
+                //std::cout << "Current token: " << tokens[index].second << std::endl;
                 if(tokens[index].first == TokenType::IDENTIFIER) {
                     double value = variables[tokens[index].second];
                     std::cout << tokens[index].second << std::endl;
@@ -186,7 +191,9 @@ double Interpreter::terminal(std::vector<std::pair<TokenType, std::string>> toke
                     incIndex();
                 }
                 else if(tokens[index].first == TokenType::NUMBER) {
-                    double value = std::stod(tokens[index].second);
+                    double value = std::stod(tokens[index].second); 
+                    args.push_back(value);
+                    incIndex();
                 }
                 else {
                     std::cout << "Identifier expected in function call!" << std::endl;
@@ -197,11 +204,12 @@ double Interpreter::terminal(std::vector<std::pair<TokenType, std::string>> toke
                     incIndex();
                 }
                 else if(tokens[index].first == TokenType::RIGHTPARAN) {
-                    incIndex();
+
+                    //incIndex();
                     break;
                 }
                 else {
-                    std::cout << "Comma or right paranthesis expected!" << std::endl;
+                    std::cout << "Comma or right paranthesis expected! Got " << tokens[index].second << " instead!" << std::endl;
                     exit(-1);
                 }
             }
@@ -241,7 +249,14 @@ double Interpreter::callFunction(std::string functionName, std::vector<double> a
     }
 
     std::vector<std::pair<TokenType, std::string>> functionTokens = f->getTokens();
+    std::vector<std::string> argNames = f->getArguments();
     std::map<std::string, double> vars;
+    
+    for(int j = 0; j < argNames.size(); j++) {
+        vars[argNames[j]] = args[j];
+    }
+
+    
     Interpreter i(vars);
     
     return i.interpret(functionTokens);
