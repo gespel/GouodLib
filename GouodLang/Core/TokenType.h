@@ -15,5 +15,6 @@ enum class TokenType {
 	FUNCTION,
 	COMMA,
 	SEMICOLON,
+	WHILE,
 	RETURN
 };

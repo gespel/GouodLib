@@ -25,7 +25,7 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
             
             while(tokens[i].first != TokenType::RIGHTPARAN) {
                 if(tokens[i].first == TokenType::IDENTIFIER) {
-                    std::cout << tokens[i].second << std::endl;
+                    //std::cout << tokens[i].second << std::endl;
                     args.push_back(tokens[i].second);
                     i++;
                 }
@@ -56,11 +56,14 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
 
             //functions[functionName] = functionTokens;
             newFunctions[functionName] = f;
-	        std::cout << "Function created with arguments: " << std::endl;
+	        /*std::cout << "Function created with arguments: " << std::endl;
             for(auto arg : f->getArguments()) {
                 std::cout << arg << std::endl;
-            }
+            }*/
 	    
+        }
+        else if(tokens[i].first == TokenType::WHILE) {
+            //TODO!
         }
         else if(tokens[i].first == TokenType::IDENTIFIER) {
             if(tokens[i+1].first != TokenType::ASSIGN) {
