@@ -20,7 +20,7 @@ private:
     double evaluate(std::vector<std::pair<TokenType, std::string>> tokens);
     double terminal(std::vector<std::pair<TokenType, std::string>> tokens, int sindex);
     double expression(std::vector<std::pair<TokenType, std::string>> tokens);
-    double callFunction(std::string functionName, std::vector<std::tuple<TokenType, std::string>> args);
+    double callFunction(std::string functionName, std::vector<double> args);
     void printTokens(std::vector<std::pair<TokenType, std::string>> tokens);
     int index = 0;
 };

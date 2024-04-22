@@ -177,10 +177,33 @@ double Interpreter::terminal(std::vector<std::pair<TokenType, std::string>> toke
             //FUNCTION CALL
             incIndex();
             incIndex();
-            std::vector<std::tuple<TokenType, std::string>> args;
+            std::vector<double> args;
             while(tokens[index].first != TokenType::RIGHTPARAN) {
-                args.push_back(tokens[index]);
-                incIndex();
+                if(tokens[index].first == TokenType::IDENTIFIER) {
+                    double value = variables[tokens[index].second];
+                    std::cout << tokens[index].second << std::endl;
+                    args.push_back(value);
+                    incIndex();
+                }
+                else if(tokens[index].first == TokenType::NUMBER) {
+                    double value = std::stod(tokens[index].second);
+                }
+                else {
+                    std::cout << "Identifier expected in function call!" << std::endl;
+                    exit(-1);
+                }
+
+                if(tokens[index].first == TokenType::COMMA) {
+                    incIndex();
+                }
+                else if(tokens[index].first == TokenType::RIGHTPARAN) {
+                    incIndex();
+                    break;
+                }
+                else {
+                    std::cout << "Comma or right paranthesis expected!" << std::endl;
+                    exit(-1);
+                }
             }
             return callFunction(tokens[sindex].second, args);
         }
@@ -211,18 +234,16 @@ void Interpreter::printDebug() {
     }
 }
 
-double Interpreter::callFunction(std::string functionName, std::vector<std::tuple<TokenType, std::string>> args) {
+double Interpreter::callFunction(std::string functionName, std::vector<double> args) {
     Function* f = newFunctions[functionName];
-    //std::vector<std::pair<TokenType, std::string>> functionTokens = functions[functionName];
+    if(f->getArguments().size() != args.size()) {
+        std::cout << "Wrong number of arguments!" << std::endl;
+    }
+
     std::vector<std::pair<TokenType, std::string>> functionTokens = f->getTokens();
     std::map<std::string, double> vars;
     Interpreter i(vars);
-    //std::cout << "Calling function: " << functionName << std::endl;
-    for(int i = 0; i < functionTokens.size(); i++) {
-        //std::cout << functionTokens[i].second << std::endl;
-        //incIndex();
-    }
-    //printTokens(functionTokens);
+    
     return i.interpret(functionTokens);
 }
 

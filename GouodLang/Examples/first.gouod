@@ -2,8 +2,8 @@ function asd(a, b) {
     x2 = 2; 
     return x2; 
 } 
-x3 = asd(); 
+x3 = asd(3, 4); 
 x = 7 + 7; 
 x; 
 8 + 7 + 3; 
-asd();
+asd(2, 1);
