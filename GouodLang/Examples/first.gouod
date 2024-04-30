@@ -1,9 +1,13 @@
-function asd(a, b) { 
-    x2 = a + b;
-    return x2; 
-} 
-x3 = asd(3, 4); 
-x = 7 + 7; 
-x; 
-8 + 7 + 3; 
-asd(2, 12);
+function lina(x) {
+    x = x + 1;
+    return x;
+}
+
+function sten(x, y) {
+    out = x + y;
+    return out;
+}
+
+lx = lina(12);
+x = sten(lx, 3);
+x;

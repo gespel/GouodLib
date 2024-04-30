@@ -22,5 +22,6 @@ private:
     double expression(std::vector<std::pair<TokenType, std::string>> tokens);
     double callFunction(std::string functionName, std::vector<double> args);
     void printTokens(std::vector<std::pair<TokenType, std::string>> tokens);
+    bool logic(std::vector<std::pair<TokenType, std::string>> tokens);
     int index = 0;
 };

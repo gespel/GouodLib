@@ -63,7 +63,10 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
 	    
         }
         else if(tokens[i].first == TokenType::WHILE) {
-            //TODO!
+            if(tokens[i+1].first == TokenType::LEFTPARAN) {
+                i++;
+                
+            }
         }
         else if(tokens[i].first == TokenType::IDENTIFIER) {
             if(tokens[i+1].first != TokenType::ASSIGN) {
@@ -189,7 +192,7 @@ double Interpreter::terminal(std::vector<std::pair<TokenType, std::string>> toke
                 //std::cout << "Current token: " << tokens[index].second << std::endl;
                 if(tokens[index].first == TokenType::IDENTIFIER) {
                     double value = variables[tokens[index].second];
-                    std::cout << tokens[index].second << std::endl;
+                    //std::cout << tokens[index].second << std::endl;
                     args.push_back(value);
                     incIndex();
                 }
@@ -256,6 +259,7 @@ double Interpreter::callFunction(std::string functionName, std::vector<double> a
     std::map<std::string, double> vars;
     
     for(int j = 0; j < argNames.size(); j++) {
+        //std::cout << "argument " << args[j] << std::endl;
         vars[argNames[j]] = args[j];
     }
 
@@ -269,5 +273,15 @@ void Interpreter::printTokens(std::vector<std::pair<TokenType, std::string>> tok
     std::cout << "Printing tokens: " << std::endl;
     for(auto const& token : tokens) {
         std::cout << token.second << std::endl;
+    }
+}
+
+bool Interpreter::logic(std::vector<std::pair<TokenType, std::string>> tokens) {
+    bool out = false;
+    for(int i = 0; i < tokens.size(); i++) {
+        if(tokens[i].first == TokenType::IDENTIFIER) {
+            double var1 = variables[tokens[i].second];
+            i++;
+        }
     }
 }
