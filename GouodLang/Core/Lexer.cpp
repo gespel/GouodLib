@@ -134,6 +134,12 @@ std::vector<std::pair<TokenType, std::string>> Lexer::tokenize(std::string input
             if(tokenString[i] == ';') {
                 out.push_back(std::pair(TokenType::SEMICOLON, "SEMICOLON"));
             }
+            if(tokenString[i] == '<') {
+                out.push_back(std::pair(TokenType::SMALLER, "SMALLER"));
+            }
+            if(tokenString[i] == '>') {
+                out.push_back(std::pair(TokenType::GREATER, "GREATER"));
+            }
         }
     }
 

@@ -46,7 +46,7 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
                     exit(-1);
                 }
             }
-            
+            //TODO: CANNOT ADD INNER BRACKETS RIGHT NOW....
             std::vector<std::pair<TokenType, std::string>> functionTokens;
             while (tokens[i].first != TokenType::RIGHTBRACK) {
                 functionTokens.push_back(tokens[i]);
@@ -65,8 +65,26 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
         else if(tokens[i].first == TokenType::WHILE) {
             if(tokens[i+1].first == TokenType::LEFTPARAN) {
                 i++;
-                
+                i++;
+                std::vector<std::pair<TokenType, std::string>> condition;
+                while(tokens[i].first != TokenType::RIGHTPARAN) {
+                    condition.push_back(tokens[i]);  
+                    i++;
+                }
+                i++;
+                std::vector<std::pair<TokenType, std::string>> loopTokens;
+                if(tokens[i].first == TokenType::LEFTBRACK) {
+                    i++;
+                    while(tokens[i].first != TokenType::RIGHTBRACK) {
+                        loopTokens.push_back(tokens[i]);
+                        i++;
+                    }
+                    while(logic(condition)) {
+                        interpret(loopTokens);
+                    }                    
+                }
             }
+            index = 0;
         }
         else if(tokens[i].first == TokenType::IDENTIFIER) {
             if(tokens[i+1].first != TokenType::ASSIGN) {
@@ -277,11 +295,62 @@ void Interpreter::printTokens(std::vector<std::pair<TokenType, std::string>> tok
 }
 
 bool Interpreter::logic(std::vector<std::pair<TokenType, std::string>> tokens) {
-    bool out = false;
-    for(int i = 0; i < tokens.size(); i++) {
+    bool out;
+    /*for(int i = 0; i < tokens.size(); i++) {
         if(tokens[i].first == TokenType::IDENTIFIER) {
             double var1 = variables[tokens[i].second];
             i++;
         }
+    }*/
+    double left;
+    double right;
+    TokenType op = tokens[1].first;
+
+    if(tokens[0].first == TokenType::IDENTIFIER) {
+        left = variables[tokens[0].second];
+    }
+    else if(tokens[0].first == TokenType::NUMBER) {
+        left = std::stod(tokens[0].second);
+    }
+
+    if(tokens[2].first == TokenType::IDENTIFIER) {
+        right = variables[tokens[2].second];
+    }
+    else if(tokens[2].first == TokenType::NUMBER) {
+        right = std::stod(tokens[2].second);
+    }
+
+    if(op == TokenType::ASSIGN) {
+        if(left == right) {
+            std::cout << "TRUE" << std::endl;
+            return true;
+        }
+        else {
+            std::cout << "FALSE" << std::endl;
+            return false;
+        }
+    }
+    else if(op == TokenType::SMALLER) {
+        if(left < right) {
+            std::cout << "TRUE" << std::endl;
+            return true;
+        }
+        else {
+            std::cout << "FALSE" << std::endl;
+            return false;
+        }
+    }
+    else if(op == TokenType::GREATER) {
+        if(left > right) {
+            std::cout << "TRUE" << std::endl;
+            return true;
+        }
+        else {
+            std::cout << "FALSE" << std::endl;
+            return false;
+        }
+    }
+    else {
+        return false;
     }
 }
