@@ -48,7 +48,20 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
             }
             //TODO: CANNOT ADD INNER BRACKETS RIGHT NOW....
             std::vector<std::pair<TokenType, std::string>> functionTokens;
-            while (tokens[i].first != TokenType::RIGHTBRACK) {
+            int brackets = 0;
+            while(tokens[i].first != TokenType::RIGHTBRACK || brackets != 0) {
+                if(tokens[i].first == TokenType::LEFTBRACK) {
+                    //std::cout << "Opened" << std::endl;
+                    brackets--;
+                }
+                else if(tokens[i].first == TokenType::RIGHTBRACK) {
+                    brackets++;
+                    //std::cout << "Closed" << std::endl;
+                    if(brackets == 0) {
+                        break;
+                    }
+                }
+                //std::cout << tokens[i].second << std::endl;
                 functionTokens.push_back(tokens[i]);
                 i++;
             }

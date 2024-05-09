@@ -1,9 +1,9 @@
 function lina(x) {
-    y = 0;
-    while(y < 1) {
+    y = x;
+    while(y < 3) {
         y = y + 1;
     }
-    return x;
+    return y;
 }
-y = lina(2);
+y = lina(4);
 y;
