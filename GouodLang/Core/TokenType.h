@@ -18,5 +18,6 @@ enum class TokenType {
 	WHILE,
 	RETURN,
 	GREATER,
-	SMALLER
+	SMALLER,
+	IF
 };

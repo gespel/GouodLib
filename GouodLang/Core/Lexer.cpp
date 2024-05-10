@@ -162,6 +162,10 @@ void Lexer::tokenizeKeywords(std::vector<std::pair<TokenType, std::string>> &tok
                 tokens[i].first = TokenType::WHILE;
                 tokens[i].second = "WHILE";
             }
+            else if(tokens[i].second == "if") {
+                tokens[i].first = TokenType::IF;
+                tokens[i].second = "IF";
+            }
         }
     }
 }
