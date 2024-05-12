@@ -1,9 +1,18 @@
 function lina(x) {
-    y = x;
-    while(y < 3) {
-        y = y + 1;
+    z = x;
+    x1 = 0;
+
+    while(z < 3) {
+        z = z + 1;
+        while(x1 < 10000) {
+            x1 = x1 + 1;
+        }
     }
-    return y;
+    z = z + x1;
+    return z;
 }
-y = lina(4);
-y;
+y = 3;
+if(y = 3) {
+    x = 15;
+    x;
+}

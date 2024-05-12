@@ -16,6 +16,7 @@ public:
     std::string getName();
     std::vector<std::pair<TokenType, std::string>> getTokens();
     std::vector<std::string> getArguments();
+    void printFunctionTokens();
 private:
     std::string name;
     std::vector<std::pair<TokenType, std::string>> tokens;

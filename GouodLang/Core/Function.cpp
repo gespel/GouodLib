@@ -17,3 +17,9 @@ std::string Function::getName() {
 std::vector<std::string> Function::getArguments() {
     return args;
 }
+
+void Function::printFunctionTokens() {
+    for(auto token : tokens) {
+        std::cout << token.second << std::endl;
+    }
+}
