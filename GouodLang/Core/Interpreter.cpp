@@ -367,7 +367,6 @@ void Interpreter::printTokens(std::vector<std::pair<TokenType, std::string>> tok
 }
 
 bool Interpreter::logic(std::vector<std::pair<TokenType, std::string>> tokens) {
-    bool out;
     /*for(int i = 0; i < tokens.size(); i++) {
         if(tokens[i].first == TokenType::IDENTIFIER) {
             double var1 = variables[tokens[i].second];
