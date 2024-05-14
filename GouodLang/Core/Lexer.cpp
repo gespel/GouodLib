@@ -150,7 +150,7 @@ std::vector<std::pair<TokenType, std::string>> Lexer::tokenize(std::string input
 void Lexer::tokenizeKeywords(std::vector<std::pair<TokenType, std::string>> &tokens) {
     for (int i = 0; i < tokens.size(); i++) {
         if (tokens[i].first == TokenType::IDENTIFIER) {
-            if (tokens[i].second == "function") {
+            if (tokens[i].second == "fn") {
                 tokens[i].first = TokenType::FUNCTION;
                 tokens[i].second = "FUNCTION";
             }
