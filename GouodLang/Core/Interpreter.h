@@ -6,6 +6,7 @@
 #include <map>
 #include "Function.h"
 #include "Tools.h"
+#include "StdFunctions.h"
 
 class Interpreter {
 public:
