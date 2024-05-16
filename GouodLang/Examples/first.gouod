@@ -11,8 +11,8 @@ fn lina(x) {
     z = z + x1;
     return z;
 }
-y = 3;
-if(y = 3) {
+y = 6;
+if(y < 5) {
     x = 15;
     x;
 }

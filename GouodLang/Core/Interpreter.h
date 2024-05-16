@@ -25,4 +25,5 @@ private:
     void printTokens(std::vector<std::pair<TokenType, std::string>> tokens);
     bool logic(std::vector<std::pair<TokenType, std::string>> tokens);
     int index = 0;
+    bool expect(TokenType, std::pair<TokenType, std::string> token);
 };

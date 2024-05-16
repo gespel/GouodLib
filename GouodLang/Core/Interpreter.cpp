@@ -20,17 +20,191 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
     for (int i = 0; i < tokens.size(); i++) {
         //std::cout << "Current token: " << tokens[i].second << std::endl;
         switch(tokens[i].first) {
-            case TokenType::RETURN {
+            case TokenType::RETURN: {
+                return terminal(tokens, i + 1);
                 break;
             }
-            case TokenType::FUNCTION {
+
+            case TokenType::FUNCTION: {
+                i++;
+                std::string functionName = tokens[i].second;
+                i += 2;
+
+
+                //ARGUMENTS
+                std::vector <std::string> args;
+
+                while (tokens[i].first != TokenType::RIGHTPARAN) {
+                    if (tokens[i].first == TokenType::IDENTIFIER) {
+                        //std::cout << tokens[i].second << std::endl;
+                        args.push_back(tokens[i].second);
+                        i++;
+                    } else {
+                        std::cout << "Identifier expected in function definition!" << std::endl;
+                        exit(-1);
+                    }
+
+                    if (tokens[i].first == TokenType::COMMA) {
+                        i++;
+                    } else if (tokens[i].first == TokenType::RIGHTPARAN) {
+                        i++;
+                        break;
+                    } else {
+                        std::cout << "Comma or right paranthesis expected!" << std::endl;
+                        exit(-1);
+                    }
+                }
+                i++;
+                std::vector <std::pair<TokenType, std::string>> functionTokens;
+                int brackets = -1;
+                while (tokens[i].first != TokenType::RIGHTBRACK || brackets != 0) {
+                    if (tokens[i].first == TokenType::LEFTBRACK) {
+                        //std::cout << "Opened" << std::endl;
+                        brackets--;
+                    } else if (tokens[i].first == TokenType::RIGHTBRACK) {
+                        brackets++;
+                        //std::cout << "Closed" << std::endl;
+                        if (brackets == 0) {
+                            break;
+                        }
+                    }
+                    //std::cout << tokens[i].second << std::endl;
+                    functionTokens.push_back(tokens[i]);
+                    i++;
+                }
+                //std::cout << "!!! " << tokens[i].second << std::endl;
+                Function *f = new Function(functionName, functionTokens, args);
+
+                //functions[functionName] = functionTokens;
+                newFunctions[functionName] = f;
+                //f->printFunctionTokens();
+                /*std::cout << "Function created with arguments: " << std::endl;
+                for(auto arg : f->getArguments()) {
+                    std::cout << arg << std::endl;
+                }*/
+
                 break;
             }
-            case TokenType::WHILE {
+            case TokenType::WHILE: {
+                if(tokens[i+1].first == TokenType::LEFTPARAN) {
+                    i++;
+                    i++;
+                    std::vector<std::pair<TokenType, std::string>> condition;
+                    while(tokens[i].first != TokenType::RIGHTPARAN) {
+                        condition.push_back(tokens[i]);
+                        i++;
+                    }
+                    i++;
+                    std::vector<std::pair<TokenType, std::string>> loopTokens;
+                    if(tokens[i].first == TokenType::LEFTBRACK) {
+                        i++;
+                        int brackets = -1;
+                        while(tokens[i].first != TokenType::RIGHTBRACK || brackets != 0) {
+                            if(tokens[i].first == TokenType::LEFTBRACK) {
+                                //std::cout << "Opened" << std::endl;
+                                brackets--;
+                            }
+                            else if(tokens[i].first == TokenType::RIGHTBRACK) {
+                                brackets++;
+                                //std::cout << "Closed" << std::endl;
+                                if(brackets == 0) {
+                                    break;
+                                }
+                            }
+                            loopTokens.push_back(tokens[i]);
+                            i++;
+                        }
+                        while(logic(condition)) {
+                            interpret(loopTokens);
+                        }
+                    }
+                }
+                index = 0;
                 break;
             }
+
+            case TokenType::IF: {
+                //TODO: IF
+                i++;
+                i++;
+                std::vector<std::pair<TokenType, std::string>> condition;
+                while(tokens[i].first != TokenType::RIGHTPARAN) {
+                    condition.push_back(tokens[i]);
+                    i++;
+                }
+                i++;
+                i++;
+
+                int brackets = -1;
+                std::vector<std::pair<TokenType, std::string>> execTokens;
+
+                while(brackets != 0) {
+                    if(tokens[i].first == TokenType::LEFTBRACK) {
+                        brackets--;
+                    }
+                    else if(tokens[i].first == TokenType::RIGHTBRACK) {
+                        brackets++;
+                        if(brackets == 0) {
+                            break;
+                        }
+                    }
+                    execTokens.push_back(tokens[i]);
+                    i++;
+                }
+                std::cout << Tools::createStringFromTokens(execTokens) << std::endl;
+
+                if(logic(condition)) {
+                    //std::cout << "True If condition" << std::endl;
+                    interpret(execTokens);
+                }
+                else {
+                    //std::cout << "False If condition" << std::endl;
+                }
+                break;
+            }
+
+            case TokenType::IDENTIFIER: {
+                if(tokens[i+1].first != TokenType::ASSIGN) {
+                    std::vector<std::pair<TokenType, std::string>> expression;
+                    while(tokens[i].first != TokenType::SEMICOLON) {
+                        expression.push_back(tokens[i]);
+                        i++;
+                    }
+                    //printTokens(expression);
+                    std::cout << Tools::createStringFromTokens(expression) << "= " << evaluate(expression) << std::endl;
+                    index = 0;
+                }
+                else {
+                    std::string variableName = tokens[i].second;
+                    if(tokens[i + 1].first == TokenType::ASSIGN) {
+                        i++;
+                        std::vector<std::pair<TokenType, std::string>> expression;
+                        while(tokens[i+1].first != TokenType::SEMICOLON) {
+                            i++;
+                            expression.push_back(tokens[i]);
+
+                        }
+                        variables[variableName] = evaluate(expression);
+                        index = 0;
+                    }
+                }
+                break;
+            }
+
+            case TokenType::NUMBER: {
+                std::vector<std::pair<TokenType, std::string>> expression;
+                while(tokens[i].first != TokenType::SEMICOLON) {
+                    expression.push_back(tokens[i]);
+                    i++;
+                }
+                //printTokens(expression);
+                std::cout << Tools::createStringFromTokens(expression) << "= " << evaluate(expression) << std::endl;
+                index = 0;
+                break;
+            }
+
         }
-        if(tokens[i].first == TokenType::RETURN) {
+        /*if(tokens[i].first == TokenType::RETURN) {
             return terminal(tokens, i + 1);
         }
         else if (tokens[i].first == TokenType::FUNCTION) {
@@ -89,10 +263,10 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
             //functions[functionName] = functionTokens;
             newFunctions[functionName] = f;
             //f->printFunctionTokens();
-	        /*std::cout << "Function created with arguments: " << std::endl;
+	        std::cout << "Function created with arguments: " << std::endl;
             for(auto arg : f->getArguments()) {
                 std::cout << arg << std::endl;
-            }*/
+            }
 	    
         }
         else if(tokens[i].first == TokenType::WHILE) {
@@ -204,7 +378,7 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
             //printTokens(expression);
             std::cout << Tools::createStringFromTokens(expression) << "= " << evaluate(expression) << std::endl;
             index = 0;
-        }
+        }*/
     }
     //std::cerr << "ERROR HIT END OF INTERPRETATION" << std::endl;
     return 0;
@@ -434,5 +608,15 @@ bool Interpreter::logic(std::vector<std::pair<TokenType, std::string>> tokens) {
     }
     else {
         return false;
+    }
+}
+
+bool Interpreter::expect(TokenType expectType, std::pair <TokenType, std::string> token) {
+    if(token.first == expectType) {
+        return true;
+    }
+    else {
+        std::cerr << "ERROR! Expected " << Tools::getStringFromTokenType(expectType) << " but got " << Tools::getStringFromTokenType(token.first) << " instead!" << std::endl;
+        exit(-1);
     }
 }
