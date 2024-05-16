@@ -19,6 +19,17 @@ double Interpreter::interpret(std::vector<std::pair<TokenType, std::string>> tok
 
     for (int i = 0; i < tokens.size(); i++) {
         //std::cout << "Current token: " << tokens[i].second << std::endl;
+        switch(tokens[i].first) {
+            case TokenType::RETURN {
+                break;
+            }
+            case TokenType::FUNCTION {
+                break;
+            }
+            case TokenType::WHILE {
+                break;
+            }
+        }
         if(tokens[i].first == TokenType::RETURN) {
             return terminal(tokens, i + 1);
         }
